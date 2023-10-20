@@ -26,6 +26,7 @@ function eventsHandler(request, response, next) {
       'Cache-Control': 'no-cache'
     };
    const clientId = request.query.clientId
+    console.log(`clientId : ${clientId}`);
 
     response.writeHead(200, headers);
 
@@ -54,7 +55,9 @@ function sendEventToClient(livestreamEvent){
     const client = clients.find( client => client.id === clientId )
     if(client) {
         client.response.write(`data: ${JSON.stringify(data)}\n\n`)
-    }
+    } else {
+        clients.forEach(client => client.response.write(`data: ${JSON.stringify("FAIL")}\n\n`))
+}
 }
 
 async function addLivestreamEvent(request, respsonse, next) {
