@@ -25,14 +25,10 @@ function eventsHandler(request, response, next) {
       'Connection': 'keep-alive',
       'Cache-Control': 'no-cache'
     };
+   const clientId = request.query.clientId
+
     response.writeHead(200, headers);
-  
-    const data = `data: ${JSON.stringify(livestreamEvents)}\n\n`;
-  
-    response.write(data);
-  
-    const clientId = Date.now();
-  
+
     const newClient = {
       id: clientId,
       response
@@ -52,11 +48,21 @@ function sendEventsToAll(livestreamEvent) {
     clients.forEach(client => client.response.write(`data: ${JSON.stringify(livestreamEvent)}\n\n`))
 }
 
+function sendEventToClient(livestreamEvent){
+    const clientId = livestreamEvent.clientId;
+    const data = livestreamEvent.data;
+    const client = clients.find( client => client.id === clientId )
+    if(client) {
+        client.response.write(`data: ${JSON.stringify(data)}\n\n`)
+    }
+}
+
 async function addLivestreamEvent(request, respsonse, next) {
     const livestreamEvent = request.body;
+    console.log(livestreamEvent);
     livestreamEvents.push(livestreamEvent);
     respsonse.json(livestreamEvent)
-    return sendEventsToAll(livestreamEvent);
+    return sendEventToClient(livestreamEvent);
 }
 
 app.post('/event', addLivestreamEvent);
