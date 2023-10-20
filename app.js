@@ -29,6 +29,8 @@ function eventsHandler(request, response, next) {
     console.log(`clientId : ${clientId}`);
 
     response.writeHead(200, headers);
+    const data = `data: ${JSON.stringify(livestreamEvents)}\n\n`;
+    response.write(data);
 
     const newClient = {
       id: clientId,
