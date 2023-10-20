@@ -56,9 +56,10 @@ function sendEventToClient(livestreamEvent){
     const data = livestreamEvent.data;
     const client = clients.find( client => client.id === clientId )
     if(client) {
-        client.response.write(`data: ${JSON.stringify(data)}\n\n`)
+          console.log(`client response write`);
+  client.response.write(`data: ${JSON.stringify(data)}\n\n`)
     } else {
-        clients.forEach(client => client.response.write(`data: ${JSON.stringify("FAIL")}\n\n`))
+          console.log(`else ta mère`);
 }
 }
 
