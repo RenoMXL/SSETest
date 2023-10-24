@@ -59,7 +59,7 @@ function sendEventToClient(livestreamEvent){
           console.log(`client response write`);
   client.response.write(`data: ${JSON.stringify(data)}\n\n`)
     } else {
-          console.log(`else ta mère`);
+          console.log(`else bug`);
 }
 }
 
